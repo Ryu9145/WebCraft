@@ -28,7 +28,7 @@ use App\Http\Controllers\AdminOrderController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');    
 
 // PENTING: Gunakan ProductController yang sudah kita perbaiki
 Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
