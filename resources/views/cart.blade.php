@@ -19,6 +19,7 @@
     <form action="{{ route('checkout.process') }}" method="POST" id="formCheckout"> 
         @csrf
         <div class="row">
+            
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-4">
@@ -33,8 +34,20 @@
                         @forelse($cartItems as $item)
                             @php 
                                 $p = $item->produk; 
+                            @endphp
+
+                            {{-- === PROTEKSI ANTI CRASH === --}}
+                            {{-- Jika produk dihapus admin (null), lewati item ini --}}
+                            @if(empty($p))
+                                @continue
+                            @endif
+                            {{-- =========================== --}}
+
+                            @php
                                 $img = asset('assets/uploads/' . $p->gambar);
-                                if(empty($p->gambar) || $p->gambar == 'default.jpg') $img = 'https://placehold.co/80x80?text=No+Image';
+                                if(empty($p->gambar) || $p->gambar == 'default.jpg') {
+                                    $img = 'https://placehold.co/80x80?text=No+Image';
+                                }
                             @endphp
 
                             <div class="d-flex align-items-center mb-4 pb-3 border-bottom cart-item">
@@ -62,11 +75,11 @@
                                 <div class="text-end">
                                     <div class="fw-bold text-primary fs-5 mb-1">Rp {{ number_format($p->harga, 0, ',', '.') }}</div>
                                     
-                                <a href="javascript:void(0)" 
-                                    class="text-danger small text-decoration-none fw-semibold btn-delete" 
-                                    data-href="{{ route('cart.destroy', $item->id) }}">
-                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                                </a>
+                                    <a href="javascript:void(0)" 
+                                       class="text-danger small text-decoration-none fw-semibold btn-delete" 
+                                       data-href="{{ route('cart.destroy', $item->id) }}">
+                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                    </a>
                                 </div>
                             </div>
                         @empty
@@ -115,13 +128,12 @@
 @endsection
 
 @section('scripts')
-@section('scripts')
 <script>
-    // Bungkus semua dalam function anonim agar variabel tidak bocor ke global (Anti-Bentrok)
+    // Bungkus dalam function anonim (IIFE) agar variabel aman
     (function($) {
         $(document).ready(function() {
             
-            console.log("Cart Script Loaded Successfully!"); // Cek di Console Browser (F12)
+            console.log("Cart Script Loaded Successfully!"); 
 
             // ==========================================
             // 1. LOGIKA HITUNG TOTAL & CHECKBOX
@@ -131,20 +143,17 @@
                 let count = 0;
                 
                 $('.item-check:checked').each(function() {
-                    // Gunakan parseFloat dan pastikan ada fallback 0
                     let price = parseFloat($(this).data('price')) || 0;
                     total += price;
                     count++;
                 });
 
-                // Format Rupiah Manual agar tidak error library
                 let formattedTotal = 'Rp ' + total.toLocaleString('id-ID');
 
                 $('#totalDisplay').text(formattedTotal);
                 $('#grandTotalDisplay').text(formattedTotal);
                 $('#countDisplay').text(count);
 
-                // Disable/Enable Tombol Checkout
                 if (count > 0) {
                     $('#btnCheckout').prop('disabled', false);
                 } else {
@@ -152,8 +161,7 @@
                 }
             }
 
-            // A. Saat Checkbox Item Diklik (Pakai 'change')
-            // Gunakan $(document).on agar elemen dinamis tetap terbaca
+            // A. Saat Checkbox Item Diklik
             $(document).on('change', '.item-check', function() {
                 updateCartTotal();
                 
@@ -175,10 +183,7 @@
             $(document).on('click', '.btn-delete', function(e) {
                 e.preventDefault();
                 
-                // Ambil URL dari atribut data-href
                 var deleteUrl = $(this).data('href'); 
-
-                console.log("Tombol Hapus Diklik, URL:", deleteUrl);
 
                 Swal.fire({
                     title: 'Hapus Item?',
@@ -200,7 +205,6 @@
             // ==========================================
             // 3. NOTIFIKASI FLASH MESSAGE (PHP)
             // ==========================================
-            // Mengambil data dari div hidden #flash-data
             var flashData = $('#flash-data');
             var successMsg = flashData.data('success');
             var errorMsg = flashData.data('error');
@@ -223,7 +227,7 @@
                 });
             }
 
-        }); // End Document Ready
-    })(jQuery); // End Function Wrapper
+        }); 
+    })(jQuery); 
 </script>
 @endsection

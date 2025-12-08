@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm py-3">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            <i class="fa-solid fa-code me-2 text-primary"></i>ThemeMarket.
+            <i class="fa-solid fa-code me-2 text-primary"></i>WebCraft.
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

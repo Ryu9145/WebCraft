@@ -5,17 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth; // Wajib import Auth untuk ambil user login
 
 class ProductController extends Controller
 {
-    // 1. TAMPILKAN SEMUA PRODUK
+    // 1. TAMPILKAN SEMUA PRODUK (Halaman Admin)
     public function index()
     {
         $products = Produk::orderBy('id', 'desc')->get();
         return view('super_admin.products', compact('products'));
     }
 
-    // 2. SIMPAN PRODUK BARU
+    // 2. TAMPILKAN DETAIL PRODUK (Halaman Frontend/User)
+    // Ini wajib ada karena route('product.detail') dipanggil di Keranjang & Home
+// 2. TAMPILKAN DETAIL PRODUK
+    public function detail($id)
+    {
+        // Ambil data dari database
+        $data = Produk::findOrFail($id);
+        
+        // PENTING: Kita kirim dengan nama 'product' (Inggris)
+        // agar cocok dengan view detail.blade.php
+        return view('detail', ['product' => $data]); 
+    }
+
+    // 3. SIMPAN PRODUK BARU
     public function store(Request $request)
     {
         $request->validate([
@@ -24,7 +38,7 @@ class ProductController extends Controller
             'harga'       => 'required|numeric',
             'link_github' => 'required|url',
             'status'      => 'required',
-            'gambar'      => 'image|mimes:jpeg,png,jpg|max:2048' // Max 2MB
+            'gambar'      => 'image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         // Logic Upload Gambar
@@ -33,8 +47,6 @@ class ProductController extends Controller
             $file = $request->file('gambar');
             $ext = $file->getClientOriginalExtension();
             $namaGambar = uniqid() . '.' . $ext;
-            
-            // Simpan ke public/assets/uploads
             $file->move(public_path('assets/uploads'), $namaGambar);
         }
 
@@ -46,13 +58,16 @@ class ProductController extends Controller
             'link_github' => $request->link_github,
             'status'      => $request->status,
             'gambar'      => $namaGambar,
-            'is_featured' => 0 // Default tidak featured
+            'is_featured' => 0,
+            
+            // PENTING: Simpan username admin yang mengupload
+            'username'    => Auth::user()->username 
         ]);
 
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // 3. UPDATE PRODUK
+    // 4. UPDATE PRODUK
     public function update(Request $request)
     {
         $request->validate([
@@ -63,16 +78,18 @@ class ProductController extends Controller
         ]);
 
         $produk = Produk::findOrFail($request->id);
-        $input = $request->all();
+        
+        // Kita gunakan only() agar data sensitif tidak tertimpa sembarangan
+        $input = $request->only(['nama_produk', 'kategori', 'harga', 'deskripsi', 'link_github', 'status']);
 
-        // Cek jika ada upload gambar baru
+        // Cek Upload Gambar Baru
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika bukan default
+            // Hapus gambar lama
             if ($produk->gambar != 'default.jpg' && File::exists(public_path('assets/uploads/' . $produk->gambar))) {
                 File::delete(public_path('assets/uploads/' . $produk->gambar));
             }
 
-            // Upload gambar baru
+            // Upload baru
             $file = $request->file('gambar');
             $ext = $file->getClientOriginalExtension();
             $namaGambar = uniqid() . '.' . $ext;
@@ -86,12 +103,11 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil diperbarui!');
     }
 
-    // 4. HAPUS PRODUK
+    // 5. HAPUS PRODUK
     public function destroy($id)
     {
         $produk = Produk::findOrFail($id);
 
-        // Hapus file gambar fisik
         if ($produk->gambar != 'default.jpg' && File::exists(public_path('assets/uploads/' . $produk->gambar))) {
             File::delete(public_path('assets/uploads/' . $produk->gambar));
         }
@@ -100,7 +116,7 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus!');
     }
 
-    // 5. QUICK ACTIONS (Approve / Reject / Feature)
+    // 6. QUICK ACTIONS
     public function updateStatus($id, $action)
     {
         $produk = Produk::findOrFail($id);
@@ -112,11 +128,10 @@ class ProductController extends Controller
             $produk->update(['status' => 'rejected']);
             $msg = 'Produk ditolak (Rejected).';
         } elseif ($action == 'feature') {
-            // Toggle Featured (0 jadi 1, 1 jadi 0)
             $produk->update(['is_featured' => !$produk->is_featured]);
             $msg = 'Status Featured diubah.';
         }
 
-        return redirect()->back()->with('success', $msg);
+        return redirect()->back()->with('success', $msg ?? 'Status diubah');
     }
 }
