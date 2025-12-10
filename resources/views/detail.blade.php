@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="d-grid gap-2">
-                    <form action="#" method="POST"> @csrf
+                    <form action="{{ route('checkout.store') }}" method="POST"> @csrf
                         <button type="button" class="btn btn-primary btn-lg rounded-pill fw-bold w-100 py-3 shadow-sm shadow-primary-hover">
                             Beli Sekarang <i class="fa-solid fa-arrow-right ms-2"></i>
                         </button>

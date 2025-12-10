@@ -45,7 +45,7 @@
         <div class="row mt-4 pt-3 border-top border-secondary border-opacity-10">
             <div class="col-12 text-center">
                 <p class="mb-0 text-muted small" style="font-size: 0.75rem;">
-                    Copyright &copy; {{ date('Y') }} ThemeMarket Digital. All rights reserved.
+                    Copyright &copy; {{ date('Y') }} WebCraft9145 Digital. All rights reserved.
                 </p>
             </div>
         </div>

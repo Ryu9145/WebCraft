@@ -90,7 +90,7 @@
                 @else
                     <div class="vr d-none d-lg-block mx-2" style="height: 25px;"></div>
                     <a href="{{ route('login') }}" class="btn btn-login text-decoration-none" style="font-weight: 700; color: #0f172a;">Masuk</a>
-                    <a href="{{ route('register') }}" class="btn btn-register text-decoration-none ms-2" style="background-color: #0f172a; color: white; font-weight: 700; padding: 8px 25px; border-radius: 8px;">Daftar</a>
+                    <a href="{{ route('login') }}" class="btn btn-register text-decoration-none ms-2" style="background-color: #0f172a; color: white; font-weight: 700; padding: 8px 25px; border-radius: 8px;">Daftar</a>
                 @endauth
             </div>
         </div>

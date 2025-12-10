@@ -151,7 +151,7 @@
         <h2 class="display-6 fw-bold mb-3">Siap Membangun Project Berikutnya?</h2>
         <p class="lead mb-4 text-white opacity-75">Bergabung dengan ribuan developer lain. Beli template atau jual karya Anda sekarang.</p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="{{ route('register') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow">Daftar Sekarang</a>
+            <a href="{{ route('login') }}" class="btn btn-light text-primary fw-bold px-4 py-2 rounded-pill shadow">Daftar Sekarang</a>
             <a href="{{ route('login') }}" class="btn btn-outline-light fw-bold px-4 py-2 rounded-pill">Masuk Akun</a>
         </div>
     </div>

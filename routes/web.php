@@ -22,6 +22,8 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminOrderController;
 
+use App\Http\Controllers\GoogleController;
+
 /*
 |--------------------------------------------------------------------------
 | 1. PUBLIC ROUTES (Bisa Diakses Siapa Saja)
@@ -29,6 +31,9 @@ use App\Http\Controllers\AdminOrderController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');    
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 // PENTING: Gunakan ProductController yang sudah kita perbaiki
 Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
@@ -130,4 +135,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Admin Orders
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/update', [AdminOrderController::class, 'updateStatus'])->name('orders.update');
+
 });
+

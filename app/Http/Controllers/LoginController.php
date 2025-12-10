@@ -33,7 +33,7 @@ class LoginController extends Controller
         $throttleKey = 'login:' . Str::lower($request->username) . '|' . $request->ip();
 
         // 2. CEK BLOKIR
-        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return back()->with('blocked_error', $seconds)->withInput(); 
         }
@@ -70,7 +70,7 @@ class LoginController extends Controller
         }
 
         // 5. JIKA GAGAL
-        RateLimiter::hit($throttleKey, 30);
+        RateLimiter::hit($throttleKey, 70);
         
         return back()->with('login_error', "Email atau Password salah.")->withInput();
     }
