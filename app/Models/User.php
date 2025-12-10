@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',    // Pastikan ini ada
         'status',  // Pastikan ini ada
+        'google_id',
     ];
 
     /**
