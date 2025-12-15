@@ -45,12 +45,25 @@
                     <div class="vr d-none d-lg-block mx-2" style="height: 25px;"></div>
 
                     <div class="dropdown">
-                        <button class="user-menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; padding: 0;">
-                            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->username }}&background=0f172a&color=fff&bold=true" 
-                                 alt="User" 
-                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
-                        </button>
+                    <button class="user-menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none; padding: 0;">
                         
+                        {{-- LOGIKA BARU: Cek Database Dulu --}}
+                        @php
+                            // 1. Cek jika kolom 'avatar' ada isinya
+                            if (Auth::user()->avatar) {
+                                // Jika ada, pakai foto dari folder public/assets/uploads
+                                $fotoProfil = asset('assets/uploads/' . Auth::user()->avatar);
+                            } else {
+                                // Jika kosong, pakai UI Avatars (Inisial Username)
+                                $fotoProfil = 'https://ui-avatars.com/api/?name=' . Auth::user()->username . '&background=0f172a&color=fff&bold=true';
+                            }
+                        @endphp
+
+                        <img src="{{ $fotoProfil }}" 
+                            alt="User" 
+                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                    </button>
+                                            
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3" style="border-radius: 12px; min-width: 200px;">
                             <li><h6 class="dropdown-header">Hai, {{ Auth::user()->username }}! 👋</h6></li>
                             

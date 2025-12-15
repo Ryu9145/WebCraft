@@ -1,0 +1,74 @@
+/* LIQUID AURORA EMAIL THEME */
+
+body {
+    background-color: #0f172a; /* Slate 900 */
+    color: #cbd5e1; /* Slate 300 */
+    height: 100%;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.email-wrapper {
+    background-color: #0f172a; /* Background Luar */
+    padding: 25px;
+    width: 100%;
+}
+
+/* KARTU PESAN UTAMA */
+.inner-body {
+    background-color: #1e293b; /* Slate 800 (Card) */
+    border: 1px solid #334155; /* Border halus */
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    color: #f8fafc;
+    margin: 0 auto;
+    padding: 0;
+    width: 570px;
+}
+
+.content-cell {
+    padding: 35px;
+}
+
+/* TYPOGRAPHY */
+h1 {
+    color: #ffffff !important;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+p {
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.6em;
+    margin-top: 0;
+}
+a { color: #38bdf8; } /* Link warna Cyan */
+
+/* TOMBOL GRADIENT */
+.action { margin: 30px auto; padding: 0; text-align: center; width: 100%; }
+.button {
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+}
+.button-primary {
+    background-color: #2563eb; 
+    background-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: 10px solid #2563eb; /* Fallback border */
+    border-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #0f172a !important; /* Teks tombol gelap */
+}
+
+/* HEADER & FOOTER */
+.header { padding: 25px 0; text-align: center; }
+.header a { color: #ffffff; font-size: 19px; font-weight: bold; text-decoration: none; }
+.footer { background-color: #0f172a; margin: 0 auto; padding: 0; text-align: center; width: 570px; }
+.footer p { color: #64748b; font-size: 12px; text-align: center; }

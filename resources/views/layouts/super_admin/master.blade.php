@@ -6,14 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard Super Admin - ThemeMarket</title>
+    <title>WebCraft</title>
+    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" type="image/png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/liquid-aurora-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/liquid-aurora-dashboard-admin.css') }}" rel="stylesheet">
     
     </head>
 
@@ -37,7 +38,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; ThemeMarket {{ date('Y') }}</span>
+                        <span>Copyright &copy; WebCraft9145 {{ date('Y') }}</span>
                     </div>
                 </div>
             </footer>

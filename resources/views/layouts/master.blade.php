@@ -6,7 +6,9 @@
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'ThemeMarket') }}</title>
+    <title>{{ config('app.name', 'WebCraft') }}</title>
+
+    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" type="image/png">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     

@@ -2,77 +2,97 @@
 
 @section('content')
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Daftar Pengguna</h1>
-    <button class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#modalTambah">
-        <i class="fas fa-user-plus fa-sm text-white-50 mr-2"></i> Tambah User Baru
+<div class="d-sm-flex align-items-center justify-content-between mb-4 sticky-dashboard-header">
+    <div>
+        <h1 class="h3 mb-1 text-gray-800" style="font-weight: 700;">Daftar Pengguna</h1>
+        <p class="mb-0 text-muted small">Kelola data User, Admin, dan Super Admin.</p>
+    </div>
+    <button class="btn btn-success shadow-sm btn-sm" data-toggle="modal" data-target="#modalTambah" style="border-radius: 50px; padding: 0.5rem 1.5rem;">
+        <i class="fas fa-user-plus fa-sm text-white-50 mr-2"></i> Tambah User
     </button>
 </div>
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header py-3 bg-transparent border-bottom-0">
         <h6 class="m-0 font-weight-bold text-primary">Data User & Admin</h6>
     </div>
-    <div class="card-body">
+    
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
-                <thead class="table-primary">
+            <table class="table table-hover mb-0" id="dataTable" width="100%" cellspacing="0">
+                <thead>
                     <tr>
-                        <th>No</th>
+                        <th class="pl-4" width="5%">No</th>
                         <th>User Info</th>
                         <th>Role</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $index => $u)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>
+                        <td class="pl-4 align-middle">{{ $index + 1 }}</td>
+                        
+                        <td class="align-middle">
                             <div class="d-flex align-items-center">
-                                <img class="rounded-circle mr-2" src="https://ui-avatars.com/api/?name={{ $u->username }}&size=30&background=random" width="30">
+                                <img class="rounded-circle mr-3 shadow-sm" 
+                                     src="https://ui-avatars.com/api/?name={{ $u->username }}&size=40&background=random&color=fff&bold=true" 
+                                     width="40" height="40" style="border: 2px solid #fff;">
                                 <div>
-                                    <div class="font-weight-bold small">{{ $u->username }}</div>
-                                    <div class="small text-gray-500">{{ $u->email }}</div>
+                                    <div class="font-weight-bold text-gray-800">{{ $u->username }}</div>
+                                    <div class="small text-muted">{{ $u->email }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
+
+                        <td class="align-middle">
                             @if($u->role == 'superadmin') 
-                                <span class="badge badge-danger">Super Admin</span>
+                                <span class="badge badge-primary shadow-sm px-3 py-2">
+                                    <i class="fas fa-crown mr-1"></i> Super Admin
+                                </span>
                             @elseif($u->role == 'admin') 
-                                <span class="badge badge-success">Admin</span>
+                                <span class="badge badge-primary shadow-sm px-3 py-2">
+                                    <i class="fas fa-user-shield mr-1"></i> Admin
+                                </span>
                             @else 
-                                <span class="badge badge-secondary">User</span>
+                                <span class="badge badge-secondary shadow-sm px-3 py-2">
+                                    <i class="fas fa-user mr-1"></i> User
+                                </span>
                             @endif
                         </td>
-                        <td>
+
+                        <td class="align-middle text-center">
                             @if($u->status == 'active') 
-                                <span class="badge badge-success">Active</span>
+                                <span class="badge badge-success shadow-sm px-3 py-2">Active</span>
                             @elseif($u->status == 'suspended') 
-                                <span class="badge badge-danger">Suspended</span>
+                                <span class="badge badge-danger shadow-sm px-3 py-2">Suspended</span>
                             @else 
-                                <span class="badge badge-secondary">{{ ucfirst($u->status) }}</span>
+                                <span class="badge badge-warning shadow-sm px-3 py-2 text-white">{{ ucfirst($u->status) }}</span>
                             @endif
                         </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm btn-edit" 
-                                data-id="{{ $u->id }}"
-                                data-username="{{ $u->username }}"
-                                data-role="{{ $u->role }}"
-                                data-status="{{ $u->status }}"
-                                data-toggle="modal" data-target="#modalEdit">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            
-                            <form action="{{ route('super_admin.users.destroy', $u->id) }}" method="POST" class="d-inline form-hapus">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger btn-sm btn-hapus">
-                                    <i class="fas fa-trash"></i>
+
+                        <td class="align-middle text-center">
+                            <div style="position: relative; z-index: 50;">
+                                <button class="btn btn-info btn-sm btn-edit shadow-sm mr-1" 
+                                    style="border-radius: 50px; padding: 0.25rem 0.8rem;"
+                                    data-id="{{ $u->id }}"
+                                    data-username="{{ $u->username }}"
+                                    data-role="{{ $u->role }}"
+                                    data-status="{{ $u->status }}"
+                                    data-toggle="modal" data-target="#modalEdit">
+                                    <i class="fas fa-edit text-white"></i>
                                 </button>
-                            </form>
+                                
+                                <form action="{{ route('super_admin.users.destroy', $u->id) }}" method="POST" class="d-inline form-hapus">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-sm btn-hapus shadow-sm" 
+                                        style="border-radius: 50px; padding: 0.25rem 0.8rem;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -83,21 +103,31 @@
 </div>
 
 <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <form method="POST" action="{{ route('super_admin.users.store') }}" class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="POST" action="{{ route('super_admin.users.store') }}" class="modal-content border-0 shadow-lg">
             @csrf
-            <div class="modal-header">
-                <h5 class="modal-title">Tambah User Baru</h5>
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold text-gray-800">Tambah User Baru</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
-                <div class="form-group"><label>Username</label><input type="text" name="username" class="form-control" required></div>
-                <div class="form-group"><label>Email</label><input type="email" name="email" class="form-control" required></div>
-                <div class="form-group"><label>Password</label><input type="password" name="password" class="form-control" required></div>
+            
+            <div class="modal-body pt-3">
+                <div class="form-group">
+                    <label class="small font-weight-bold text-muted">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="small font-weight-bold text-muted">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="small font-weight-bold text-muted">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Role</label>
+                            <label class="small font-weight-bold text-muted">Role</label>
                             <select name="role" class="form-control">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
@@ -107,7 +137,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Status</label>
+                            <label class="small font-weight-bold text-muted">Status</label>
                             <select name="status" class="form-control">
                                 <option value="active">Active</option>
                                 <option value="suspended">Suspended</option>
@@ -116,36 +146,41 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+            
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 50px;">Batal</button>
+                <button type="submit" class="btn btn-primary shadow-sm" style="border-radius: 50px;">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <form method="POST" action="{{ route('super_admin.users.update') }}" class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="POST" action="{{ route('super_admin.users.update') }}" class="modal-content border-0 shadow-lg">
             @csrf
-            <div class="modal-header">
-                <h5 class="modal-title">Edit User</h5>
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-weight-bold text-gray-800">Edit User</h5>
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            
+            <div class="modal-body pt-3">
                 <input type="hidden" name="id" id="edit-id">
                 
-                <div class="form-group"><label>Username</label><input type="text" name="username" id="edit-username" class="form-control" required></div>
+                <div class="form-group">
+                    <label class="small font-weight-bold text-muted">Username</label>
+                    <input type="text" name="username" id="edit-username" class="form-control" required>
+                </div>
                 
                 <div class="form-group">
-                    <label>Password Baru <small class="text-muted">(Kosongkan jika tidak ingin ubah)</small></label>
+                    <label class="small font-weight-bold text-muted">Password Baru <span class="text-muted font-weight-normal">(Opsional)</span></label>
                     <input type="password" name="password" class="form-control" placeholder="******">
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Role</label>
+                            <label class="small font-weight-bold text-muted">Role</label>
                             <select name="role" id="edit-role" class="form-control">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
@@ -155,7 +190,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Status</label>
+                            <label class="small font-weight-bold text-muted">Status</label>
                             <select name="status" id="edit-status" class="form-control">
                                 <option value="active">Active</option>
                                 <option value="suspended">Suspended</option>
@@ -164,9 +199,10 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-success">Update Data</button>
+            
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 50px;">Batal</button>
+                <button type="submit" class="btn btn-success shadow-sm" style="border-radius: 50px;">Update Data</button>
             </div>
         </form>
     </div>
@@ -211,7 +247,8 @@
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus'
+                confirmButtonText: 'Ya, Hapus',
+                backdrop: `rgba(0,0,123,0.1)` // Tambahan efek backdrop
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();
@@ -219,8 +256,7 @@
             });
         });
 
-        // 3. LOGIC NOTIFIKASI (MENGAMBIL DARI ATRIBUT HTML)
-        // Ini cara paling aman agar Javascript tidak error sintaks
+        // 3. LOGIC NOTIFIKASI
         var flashData = $('#flash-data');
         var successMessage = flashData.data('success');
         var errorMessage = flashData.data('error');
@@ -232,24 +268,17 @@
                 text: successMessage,
                 icon: 'success',
                 timer: 2000,
-                showConfirmButton: false
+                showConfirmButton: false,
+                backdrop: `rgba(0,0,123,0.1)`
             });
         }
 
         if (errorMessage) {
-            Swal.fire({
-                title: 'Gagal!',
-                text: errorMessage,
-                icon: 'error'
-            });
+            Swal.fire({ title: 'Gagal!', text: errorMessage, icon: 'error' });
         }
 
         if (validationMessage) {
-            Swal.fire({
-                title: 'Error Validasi',
-                text: validationMessage,
-                icon: 'error'
-            });
+            Swal.fire({ title: 'Error Validasi', text: validationMessage, icon: 'error' });
         }
     });
 </script>

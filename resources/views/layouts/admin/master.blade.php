@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin Dashboard</title>
+    <title>WebCraft</title>
+    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" type="image/png">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/liquid-aurora-dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/liquid-aurora-dashboard-admin.css') }}" rel="stylesheet">
     </head>
 <body id="page-top">
     <div id="wrapper">
@@ -21,10 +24,12 @@
                     @yield('content')
                 </div>
             </div>
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; ThemeMarket {{ date('Y') }}</span>
+                        <span class="copyright">
+                            &copy; {{ date('Y') }} <strong>TheCraft</strong> &mdash; Crafted with <i class="fas fa-heart text-danger mx-1"></i> for Developers
+                        </span>
                     </div>
                 </div>
             </footer>

@@ -24,7 +24,7 @@ class LoginController extends Controller
             'username' => ['required', 'email', 'ends_with:gmail.com'],
             'password' => 'required',
         ], [
-            'username.ends_with' => 'Format email tidak valid.',
+            'username.ends_with' => 'Format email tidak valid (harus @gmail.com).',
             'username.email'     => 'Format email tidak valid.',
             'username.required'  => 'Email tidak boleh kosong.',
             'password.required'  => 'Password tidak boleh kosong.',
@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         $throttleKey = 'login:' . Str::lower($request->username) . '|' . $request->ip();
 
-        // 2. CEK BLOKIR
+        // 2. CEK BLOKIR (Rate Limiting)
         if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return back()->with('blocked_error', $seconds)->withInput(); 
@@ -46,20 +46,36 @@ class LoginController extends Controller
 
         // 4. PROSES LOGIN
         if (Auth::attempt($credentials)) {
+            
+            // =======================================================
+            // [LOGIKA BARU] CEK VERIFIKASI EMAIL
+            // =======================================================
+            $user = Auth::user();
+
+            if ($user->email_verified_at === null) {
+                // Jika belum diverifikasi:
+                Auth::logout(); // 1. Paksa Logout
+                
+                $request->session()->invalidate(); // 2. Hapus sesi
+                $request->session()->regenerateToken();
+
+                // 3. Tendang kembali ke login dengan pesan error
+                return back()
+                    ->with('login_error', 'Akun Anda belum diverifikasi. Silakan cek inbox email Anda.')
+                    ->withInput();
+            }
+            // =======================================================
+
             RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
             
-            // =======================================================
-            // PERBAIKAN: Panggil Auth::user()->role secara langsung
-            // =======================================================
-            
             // Cek Super Admin
-            if (Auth::user()->role == 'superadmin') {
+            if ($user->role == 'superadmin') {
                 return redirect()->route('super_admin.dashboard');
             } 
             
             // Cek Admin Biasa
-            elseif (Auth::user()->role == 'admin') {
+            elseif ($user->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             } 
             
@@ -69,7 +85,7 @@ class LoginController extends Controller
             }
         }
 
-        // 5. JIKA GAGAL
+        // 5. JIKA GAGAL (Password Salah)
         RateLimiter::hit($throttleKey, 70);
         
         return back()->with('login_error', "Email atau Password salah.")->withInput();

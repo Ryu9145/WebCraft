@@ -108,8 +108,17 @@
                 </div>
 
                 <div class="d-grid gap-2">
-                    <form action="{{ route('checkout.store') }}" method="POST"> @csrf
-                        <button type="button" class="btn btn-primary btn-lg rounded-pill fw-bold w-100 py-3 shadow-sm shadow-primary-hover">
+                    <form action="{{ route('checkout.process') }}" method="POST"> 
+                        @csrf
+                        
+                        {{-- BAGIAN INI YANG HILANG SEBELUMNYA: --}}
+                        {{-- 1. Kirim ID Produk --}}
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        
+                        {{-- 2. Kirim Jumlah (Default 1) --}}
+                        <input type="hidden" name="quantity" value="1"> 
+                        
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold w-100 py-3 shadow-sm shadow-primary-hover">
                             Beli Sekarang <i class="fa-solid fa-arrow-right ms-2"></i>
                         </button>
                     </form>

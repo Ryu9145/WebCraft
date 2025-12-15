@@ -1,0 +1,478 @@
+/* =======================================================================
+   WEB CRAFT: LIQUID AURORA DASHBOARD THEME
+   Base: SB Admin 2 Override
+   Font: Poppins
+======================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    /* --- COLOR PALETTE --- */
+    --navy-deep:    #0f172a;
+    --navy-light:   #1e293b;
+    --white:        #ffffff;
+    --glass-bg:     rgba(255, 255, 255, 0.85); /* Kartu semi-transparan */
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --text-main:    #334155;
+    --text-muted:   #64748b;
+    
+    /* --- AURORA GRADIENTS --- */
+    --grad-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --grad-success: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+    --grad-info:    linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --grad-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    
+    /* --- UTILS --- */
+    --shadow-soft:  0 10px 40px -10px rgba(0,0,0,0.08);
+    --shadow-hover: 0 20px 50px -10px rgba(0,0,0,0.15);
+    --radius-card:  20px;
+}
+
+/* =========================================
+   1. GLOBAL & LAYOUT
+========================================= */
+body {
+    font-family: 'Poppins', sans-serif !important;
+    background-color: #f1f5f9 !important;
+    color: var(--text-main) !important;
+    /* Background Halus Aurora */
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(102, 126, 234, 0.08), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(118, 75, 162, 0.08), transparent 40%);
+    background-attachment: fixed;
+}
+
+#wrapper #content-wrapper {
+    background: transparent !important; /* Agar background body terlihat */
+}
+
+/* Scrollbar Modern */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+
+/* =========================================
+   2. SIDEBAR (GLASS DARK NAVY)
+========================================= */
+.sidebar {
+    background: var(--navy-deep) !important;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%) !important;
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-brand {
+    font-size: 1rem !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 10px;
+}
+
+.sidebar .nav-item .nav-link {
+    border-radius: 10px;
+    margin: 0 10px;
+    width: auto !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-weight: 300;
+}
+
+.sidebar .nav-item .nav-link:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(5px);
+}
+
+.sidebar .nav-item.active .nav-link {
+    background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+    box-shadow: 0 4px 15px rgba(78, 115, 223, 0.4);
+    font-weight: 400;
+}
+
+.sidebar .sidebar-heading {
+    margin-top: 15px;
+    opacity: 0.6;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   3. TOPBAR (CLEAN GLASS)
+========================================= */
+.topbar {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02) !important;
+    margin-bottom: 30px !important; /* Jarak ke konten */
+}
+
+/* User Profile Image */
+.img-profile {
+    border: 2px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.nav-link:hover .img-profile {
+    transform: scale(1.1);
+    border-color: #4e73df;
+}
+
+
+/* =========================================
+   4. CARDS (LIQUID AURORA STYLE) - FIXED
+========================================= */
+.card {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-card) !important;
+    box-shadow: var(--shadow-soft) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    
+    /* PERBAIKAN KRUSIAL: Ubah hidden jadi visible */
+    overflow: visible !important; 
+    
+    /* Pastikan kartu menjadi base layer */
+    position: relative;
+    z-index: 1;
+}
+
+.card:hover {
+    /* Opsional: Matikan animasi gerak jika mengganggu klik pada tabel */
+    /* transform: translateY(-5px); */ 
+    
+    box-shadow: var(--shadow-hover) !important;
+    background: #fff !important;
+    z-index: 5; /* Naikkan prioritas saat di-hover */
+}
+
+/* Pastikan Body Kartu & Tabel bisa diklik */
+.card-body {
+    position: relative;
+    z-index: 2; /* Di atas background kartu */
+}
+
+.table-responsive {
+    position: relative;
+    z-index: 3; /* Di atas card-body */
+    overflow-x: auto !important; /* Scroll samping tetap jalan */
+}
+
+/* --- STATISTIC CARDS (The colorful ones) --- */
+/* Reset Border Lama */
+.border-left-primary, .border-left-success, .border-left-info, .border-left-warning {
+    border-left: none !important;
+    position: relative;
+}
+
+/* New Indicator Style (Glow Bar at Bottom) */
+.card.border-left-primary::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--grad-primary); }
+.card.border-left-success::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--grad-success); }
+.card.border-left-info::after    { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--grad-info); }
+.card.border-left-warning::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--grad-warning); }
+
+/* Icon Styling in Cards */
+.col-auto i {
+    opacity: 0.3;
+    transition: 0.5s ease;
+    filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+}
+
+.card:hover .col-auto i {
+    opacity: 1;
+    transform: scale(1.2) rotate(15deg);
+}
+
+/* Text Colors Mapping to Gradients */
+.text-primary { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text-success { background: var(--grad-success); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text-info    { background: var(--grad-info); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text-warning { background: var(--grad-warning); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.text-gray-800 { color: var(--navy-deep) !important; }
+
+
+/* =========================================
+   5. TABLE STYLING
+========================================= */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: transparent;
+    font-weight: 600 !important;
+    padding: 1rem 0.75rem !important;
+}
+
+.table td {
+    vertical-align: middle !important;
+    padding: 0,8rem 0.75rem !important;
+    border-top: 1px solid #f8fafc !important;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc !important; /* Hover row sangat halus */
+}
+
+
+/* =========================================
+   6. BADGES & BUTTONS
+========================================= */
+.badge {
+    padding: 0.6em 1em !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.badge-success { background: var(--grad-success) !important; border: none; color: white !important; }
+.badge-warning { background: var(--grad-warning) !important; border: none; color: white !important; }
+.badge-danger  { background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%) !important; border: none; color: white !important; }
+.badge-secondary { background: #e2e8f0 !important; color: var(--text-muted) !important; }
+
+.btn-primary {
+    background: var(--navy-deep) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3) !important;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #232d45 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.4) !important;
+}
+
+
+/* =========================================
+   7. DROPDOWN MENU (ANIMATED)
+========================================= */
+.dropdown-menu {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important;
+    padding: 10px !important;
+    animation: fadeInUp 0.3s ease;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 10px 15px !important;
+    font-weight: 500;
+    color: var(--text-main) !important;
+    transition: 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9 !important;
+    color: var(--navy-deep) !important;
+    transform: translateX(5px);
+}
+
+.dropdown-item i {
+    color: var(--text-muted);
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    transition: 0.2s;
+}
+
+.dropdown-item:hover i {
+    color: #4e73df; /* Brand blue */
+}
+
+/*UPLOAD PAGE*/
+
+
+    .img-thumbnail-product { 
+        width: 50px; 
+        height: 50px; 
+        object-fit: cover; 
+        border-radius: 12px; /* Lebih rounded */
+        border: 2px solid #fff; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    .img-thumbnail-product:hover {
+        transform: scale(1.1);
+        z-index: 10;
+    }
+
+    /* Modal Styling (Glassmorphism) */
+    .modal-content {
+        border: none;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 1.5rem;
+    }
+    .modal-footer {
+        border-top: 1px solid rgba(0,0,0,0.05);
+        padding: 1.5rem;
+    }
+    
+    /* Input Styling */
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+    
+    /* Custom File Input */
+    .form-control-file {
+        background: #f8fafc;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px dashed #cbd5e1;
+        width: 100%;
+        cursor: pointer;
+    }
+    .form-control-file:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+    }
+
+    /* Status Badge & Icons */
+    .repo-link {
+        color: var(--text-main);
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px; height: 35px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .repo-link:hover {
+        background: #000;
+        color: #fff !important;
+        transform: translateY(-2px);
+    }
+
+
+/* =========================================================
+   9. CRITICAL FIXES (FINAL & STABLE)
+   ========================================================= */
+
+/* A. Fix Dropdown & Overflow */
+#wrapper #content-wrapper {
+    overflow-x: visible !important; 
+    overflow-y: visible !important;
+    /* HAPUS z-index: 1 disini agar Modal tidak terperangkap */
+}
+
+/* B. Topbar harus di atas konten, tapi di bawah Modal */
+.topbar {
+    position: relative !important; 
+    z-index: 800 !important; 
+}
+
+.navbar {
+    overflow: visible !important;
+}
+
+/* C. Dropdown Menu selalu di atas Topbar */
+.dropdown-menu {
+    z-index: 1000 !important;
+    position: absolute !important;
+}
+
+/* D. Fix Modal Interaction (SOLUSI MASALAH ANDA) */
+/* Kita pastikan Modal dan isinya memiliki Z-Index tertinggi di alam semesta web ini */
+.modal {
+    z-index: 99999 !important; 
+}
+
+.modal-backdrop {
+    z-index: 90000 !important; /* Layar hitam di bawah modal */
+}
+
+.modal-dialog {
+    z-index: 100000 !important; /* Dialog di atas segalanya */
+    pointer-events: auto !important; /* Pastikan bisa diklik */
+}
+
+.modal-content {
+    pointer-events: auto !important;
+}
+
+/* E. Reset Card Fix */
+.card {
+    transform: none; 
+    position: relative;
+    z-index: 1;
+    overflow: visible !important; /* PENTING: Ulangi di sini untuk memastikan */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Jika ingin tetap ada animasi */
+    z-index: 10; /* Pastikan saat hover dia paling depan */
+}
+
+/* =========================================================
+   10. FINAL FIX: HILANGKAN SCROLLBAR SAMPING (V2)
+   ========================================================= */
+
+/* 1. Kunci Scroll Horizontal pada Level Akar (Root) */
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important; /* Paksa sembunyikan kelebihan lebar */
+    position: relative;
+}
+
+/* 2. Kunci Wrapper Utama */
+#wrapper {
+    width: 100%;
+    overflow-x: hidden !important;
+}
+
+/* 3. PERBAIKAN BARIS (ROW) - INI KUNCINYA */
+/* Kita hapus margin negatif pemicu scrollbar khusus di dalam layout utama */
+.container-fluid > .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* 4. Pastikan Content Wrapper tetap Visible untuk Dropdown */
+/* Tapi kita paksa lebarnya tidak boleh lebih dari 100% */
+#content-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: visible !important; /* Biarkan dropdown terlihat */
+    overflow-y: visible !important;
+}
+
+/* 5. Fix Tabel Melar */
+/* Pastikan tabel responsif tidak memaksa container melebar */
+.table-responsive {
+    overflow-x: auto !important;
+    width: 100% !important;
+}
